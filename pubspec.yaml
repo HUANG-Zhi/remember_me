@@ -25,6 +25,7 @@ dependencies:
   cupertino_icons: ^0.1.2
   storage_path: ^0.0.8
   shared_preferences: ^0.5.1
+  #geolocator: ^1.4.0
 
 dev_dependencies:
   flutter_test:

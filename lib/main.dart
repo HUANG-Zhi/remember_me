@@ -31,9 +31,7 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-
-
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver{
   List<WeightPath> currentWeightedPaths = [];
   int currentWeightIndex = 0;
   String currentDirectory;
@@ -52,6 +50,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState() {
+    //print('init load image');
+    WidgetsBinding.instance.addObserver(this);
     super.initState();
     loadImages();
     controller.addListener(() {
@@ -63,10 +63,27 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      setState(() {
+        reFresh();
+      });
+    }
+  }
+
   Future<void> loadImages() async {
     String imagePath = '';
     try {
+      //print('start load image');
       imagePath = await StoragePath.imagesPath;
+      //print('end load image:'+imagePath);
       var response = jsonDecode(imagePath);
       var imageList = response as List;
       List<FileModel> listDirectories =
@@ -96,6 +113,7 @@ class _MyHomePageState extends State<MyHomePage> {
     }
     _tabIndex = RateType.values.indexOf(currentWeightedPaths[currentWeightIndex].rateType);
   }
+
   reFresh() async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _loadCurrentDirectory(prefs);
@@ -145,7 +163,10 @@ class _MyHomePageState extends State<MyHomePage> {
         currentIndex: _tabIndex,
         onTap: (index) {
           setState(() {
-            currentWeightedPaths[currentWeightIndex].updateRate(RateType.values[index]);
+            if(currentWeightedPaths.length > 0) {
+              currentWeightedPaths[currentWeightIndex].updateRate(
+                  RateType.values[index]);
+            }
           });
         },
         backgroundColor: Colors.black,
