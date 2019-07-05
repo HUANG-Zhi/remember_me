@@ -44,7 +44,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver{
   var pageOffset = 0.0;
   var width = 100.0;
   final _biggerFont = const TextStyle(fontSize: 18.0);
-  final _buttonFont = TextStyle(color: _themeColor);
+  //final _buttonFont = TextStyle(color: _themeColor);
   final _currentDirectoryKey = 'Remember_CurrentDirectoryKey';
   int _tabIndex = 0;
 
@@ -108,10 +108,11 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver{
     currentWeightedPaths = imageFiles[currentDirectory].map((filePath) => new WeightPath(filePath,currentDirectory,prefs)).toList();
     currentWeightedPaths.sort((a,b) => a.compareTo(b));
     currentWeightedPaths = currentWeightedPaths.sublist(0,hotSize);
+    currentWeightIndex = 0;
     if(currentWeightedPaths.length > 0){
-      currentWeightedPaths[0].updateRate();
+      currentWeightedPaths[currentWeightIndex].updateRate();
+      _tabIndex = RateType.values.indexOf(currentWeightedPaths[currentWeightIndex].rateType);
     }
-    _tabIndex = RateType.values.indexOf(currentWeightedPaths[currentWeightIndex].rateType);
   }
 
   reFresh() async{
@@ -124,7 +125,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver{
   Widget build(BuildContext context) {
     final size =MediaQuery.of(context).size;
     final width = size.width;
-    final height = size.height;
+    //final height = size.height;
     this.width = size.width;
 
     return Scaffold(
