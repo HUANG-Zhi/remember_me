@@ -106,10 +106,10 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver{
 
   _loadCurrentDirectory(SharedPreferences prefs){
     currentWeightedPaths = imageFiles[currentDirectory].map((filePath) => new WeightPath(filePath,currentDirectory,prefs)).toList();
-    currentWeightedPaths.sort((a,b) => a.compareTo(b));
-    currentWeightedPaths = currentWeightedPaths.sublist(0,hotSize);
-    currentWeightIndex = 0;
     if(currentWeightedPaths.length > 0){
+      currentWeightedPaths.sort((a,b) => a.compareTo(b));
+      currentWeightedPaths = currentWeightedPaths.sublist(0,hotSize > currentWeightedPaths.length ?  currentWeightedPaths.length : hotSize);
+      currentWeightIndex = 0;
       currentWeightedPaths[currentWeightIndex].updateRate();
       _tabIndex = RateType.values.indexOf(currentWeightedPaths[currentWeightIndex].rateType);
     }
@@ -118,6 +118,9 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver{
   reFresh() async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _loadCurrentDirectory(prefs);
+    //print('.........start');
+    controller.jumpTo(0.0);
+    //print('.........end');
     prefs.setString(_currentDirectoryKey,currentDirectory);
   }
 
