@@ -25,7 +25,7 @@
 </p>
 
 ## 下载
-[RememberMe apk 0.1.0](https://raw.githubusercontent.com/HUANG-Zhi/remember_me/master/output/apk/app.apk)
+[RememberMe apk 0.1.0](https://github.com/HUANG-Zhi/remember_me/raw/master/output/app.apk)
 
 ## Todo
 编译支持ios
